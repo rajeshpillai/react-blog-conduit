@@ -1,12 +1,25 @@
 import React from 'react';
-import './App.scss';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from 'react-router-dom';
 
+import './App.scss';
 import NavBar from './components/navbar';
+import GlobalFeed from './pages/global-feed';
+import Article from './pages/article';
 
 function App() {
   return (
     <div className="container">
-      <NavBar />
+      <Router>
+        <NavBar />
+        <Switch>
+          <Route path="/" component={GlobalFeed} exact />
+          <Route path="/articles/:slug" component={Article} />
+        </Switch>
+      </Router>
     </div>
   );
 }
