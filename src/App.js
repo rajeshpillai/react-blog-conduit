@@ -9,6 +9,7 @@ import './App.scss';
 import NavBar from './components/navbar';
 import GlobalFeed from './pages/global-feed';
 import Article from './pages/article';
+import Login from './pages/login';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Switch>
           <Route path="/" component={GlobalFeed} exact />
           <Route path="/articles/:slug" component={Article} />
+          <Route path="/login" component={Login} />
         </Switch>
       </Router>
     </div>
