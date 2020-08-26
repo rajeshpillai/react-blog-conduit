@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import {useFetch} from '../hooks/use-fetch';
-
+import BackendError from '../components/backend-error-messages';
 
 export default function Login() {
   const [user, setUser] = useState({
@@ -24,7 +24,7 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(JSON.stringify(user));
+    // alert(JSON.stringify(user));
 
     doFetch({
       method: "POST",
@@ -61,6 +61,7 @@ export default function Login() {
         <Link to="/register">Need an account?</Link>
       </div>
       {isLoading && <h4>Loading.....</h4>}
+      {error && <BackendError errors={error} />}
       <form className="container" onSubmit={handleSubmit}>
         <div className="form-group row">
           <label className="col-sm-2 col-form-label">Email</label>

@@ -21,13 +21,13 @@ export function useFetch(url) {
     fetch(`${API}/${url}`, {
       ...options,
       headers: {
-        "Content-type": "application/json; charset=UTf-8"
+        "Content-type": "application/json; charset=UTf-8",
       }
     }).then(res => {
       console.log(res);
-      if (!res.ok) {
-        throw "Some error occurred.  Likely, issue with authentication!";
-      }
+      // if (!res.ok) {
+      //   throw "Some error occurred.  Likely, issue with authentication!";
+      // }
       return res.json();
     }).then(json => {
       // Our data is here in json parameter
@@ -40,8 +40,9 @@ export function useFetch(url) {
       }
       setResponse(json);
     }).catch(e => {
+      //{"errors":{"email or password":["is invalid"]}}
       setError({
-        message: e
+          "Server side error": [e.message]
       });
       setIsLoading(false);
     })
