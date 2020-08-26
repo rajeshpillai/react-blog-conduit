@@ -18,7 +18,8 @@ function App() {
         <NavBar />
         <Switch>
           <Route path="/" component={GlobalFeed} exact />
-          <Route path="/articles/:slug" component={Article} />
+          <Route path="/articles/:slug" 
+            component={Article} />
           <Route path="/login" component={Login} />
         </Switch>
       </Router>
