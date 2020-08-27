@@ -1,2 +1,18 @@
-.App {
+.error-messages {
+    margin-top: 10px;
+    background-color: #e64475;
+    border: 1px solid #e64475;
+    color: yellow;
+}
+.posts {
+    margin-top: 10px;
+    padding: 10px;
+}
+
+
+.post-item{
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
 }

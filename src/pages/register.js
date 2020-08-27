@@ -5,15 +5,15 @@ import BackendError from '../components/backend-error-messages';
 
 export default function Login() {
   const [user, setUser] = useState({
+    username: "",
     email: "",
     password: ""
   });
 
   // useFetch
   const [{isLoading, response, error}, doFetch] 
-    = useFetch("users/login");
+    = useFetch("users");
 
-  console.log("login: ",isLoading, response, error);
 
   const handleChange = (e) => {
     setUser({
@@ -30,39 +30,32 @@ export default function Login() {
       method: "POST",
       body: JSON.stringify({
         user: {
+          username: user.username,
           email: user.email,
           password: user.password
         }
       })
     });
-
-    // fetch(`${API}/users/login`, {
-    //   method: 'post',
-    //   body: JSON.stringify({
-    //     user: {
-    //       email: user.email,
-    //       password: user.password
-    //     }
-    //   }),
-    //   headers: {
-    //     "Content-type": "application/json; charset=UTF-8"
-    //   }
-    // })
-    // .then(res => res.json())
-    // .then(json => {
-    //   console.log(json);
-    // })
   }
 
   return (
     <div className="container">
       <div className="mt-5">
-        <h1 className="text-xs-center">Login</h1>
-        <Link to="/register">Need an account?</Link>
+        <h1 className="text-xs-center">Register</h1>
       </div>
       {isLoading && <h4>Loading.....</h4>}
       {error && <BackendError errors={error} />}
       <form className="container" onSubmit={handleSubmit}>
+        <div className="form-group row">
+          <label className="col-sm-2 col-form-label">Username</label>
+          <div className="col-sm-10">
+            <input type="text" className="form-control" 
+             name="username"
+             onChange={handleChange}
+             value={user.username} />
+          </div>
+        </div>
+
         <div className="form-group row">
           <label className="col-sm-2 col-form-label">Email</label>
           <div className="col-sm-10">
@@ -84,7 +77,7 @@ export default function Login() {
           </div>
         </div>
         <button className="btn btn-lg btn-primary pull-xs-right">
-          Sign in
+          Sign up
         </button>
       </form>
     </div>

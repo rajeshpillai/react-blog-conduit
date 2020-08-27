@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react';
 
-const API = "https://conduit.productionready.io/api";
+//const API = "https://conduit.productionready.io/api";
+const API = "https://jsonplaceholder.typicode.com";
 
 export function useFetch(url) {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,7 +32,7 @@ export function useFetch(url) {
       return res.json();
     }).then(json => {
       // Our data is here in json parameter
-      console.log(json);
+      console.log("JSON:", json);
       setIsLoading(false);
 
       if (json.errors) {
