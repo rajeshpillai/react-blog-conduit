@@ -17,7 +17,7 @@ import {useFetch} from './hooks/use-fetch';
 function App() {
   const [articles, setArticles] = useState([]);
 
-  const [{isLoading, response, error}, doFetch] = useFetch("posts");
+  const [{isLoading, response, error}, doFetch] = useFetch("articles");
 
   useEffect(() => {
     doFetch({
@@ -28,8 +28,8 @@ function App() {
   // The data is actually available now or any errror is there
   useEffect(() => {
     if (!response)  return;
-    console.log("POSTS:", response);
-    setArticles(response);
+    console.log("POSTS:", response.articles);
+    setArticles(response.articles);
   },[response, error])
 
 

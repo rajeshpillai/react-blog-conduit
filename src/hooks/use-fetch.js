@@ -1,7 +1,7 @@
 import {useState, useEffect} from 'react';
 
-//const API = "https://conduit.productionready.io/api";
-const API = "https://jsonplaceholder.typicode.com";
+const API = "https://algo-blog-api.herokuapp.com/api";
+// const API = "http://localhost:3001/api";
 
 export function useFetch(url) {
   const [isLoading, setIsLoading] = useState(false);
@@ -21,8 +21,10 @@ export function useFetch(url) {
     // Fetch the data
     fetch(`${API}/${url}`, {
       ...options,
+      mode: 'cors',
       headers: {
         "Content-type": "application/json; charset=UTf-8",
+        "Access-Control-Allow-Origin":"*",
       }
     }).then(res => {
       console.log(res);

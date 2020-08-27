@@ -27,7 +27,7 @@ export default function Login() {
     // alert(JSON.stringify(user));
 
     doFetch({
-      method: "POST",
+      method: "post",
       body: JSON.stringify({
         user: {
           email: user.email,
