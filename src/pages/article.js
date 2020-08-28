@@ -102,7 +102,7 @@ export default function Article() {
           <div className="comments">
             { allComments &&  allComments.comments.map(c => {
               return (
-                <div className="comment">
+                <div key={c.id} className="comment">
                     <pre>
                       {c.body}
                     </pre>
