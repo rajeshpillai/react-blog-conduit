@@ -13,6 +13,7 @@ import Login from './pages/login';
 import Register from './pages/register';
 
 import {useFetch} from './hooks/use-fetch';
+import { CurrentUserProvider } from './providers/current-user-provider';
 
 function App() {
   const [articles, setArticles] = useState([]);
@@ -36,20 +37,22 @@ function App() {
 
 
   return (
-    <div className="container">
-      <Router>
-        <NavBar />
-        <Switch>
-          <Route path="/" exact >
-            <GlobalFeed data={articles}/>
-          </Route>
-          <Route path="/articles/:slug" 
-            component={Article} />
-          <Route path="/login" component={Login} />
-          <Route path="/register" component={Register} />
-        </Switch>
-      </Router>
-    </div>
+    <CurrentUserProvider>
+      <div className="container">
+        <Router>
+          <NavBar />
+          <Switch>
+            <Route path="/" exact >
+              <GlobalFeed data={articles}/>
+            </Route>
+            <Route path="/articles/:slug" 
+              component={Article} />
+            <Route path="/login" component={Login} />
+            <Route path="/register" component={Register} />
+          </Switch>
+        </Router>
+      </div>
+    </CurrentUserProvider>
   );
 }
 
