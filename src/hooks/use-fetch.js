@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import {useState, useEffect, useCallback} from 'react';
 import { SYSTEM } from '../constants/systems';
 import {useLocalStorage} from '../hooks/use-local-storage';
 
@@ -14,10 +14,10 @@ export function useFetch(url) {
 
   const [token] = useLocalStorage(SYSTEM.AUTH_TOKEN_KEY);
 
-  const doFetch = (options = {}) => {
+  const doFetch =useCallback((options = {}) => {
     setOptions(options);
     setIsLoading(true);
-  }
+  },[]);
 
   // Make fetch api call here
   useEffect(() => {

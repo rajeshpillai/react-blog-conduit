@@ -9,6 +9,13 @@
     padding: 10px;
 }
 
+.post-meta {
+    display: flex;
+    justify-content: end;
+}
+.post-meta span {
+    padding: 4px;
+}
 
 .post-item{
     margin-bottom: 10px;
@@ -27,8 +34,22 @@
 }
 
 .tag {
-    background-color: yellow;
-    padding: 4px;
+    background-color: #fddb3a;
+    padding: 2px 8px;
     margin:5px;
     font-weight: 200;
+}
+
+.favorited, .not-favorited {
+    cursor: pointer;
+}
+
+.not-favorited {
+    color: transparent;
+    text-shadow: 0 0 0 gray;
+}
+
+.favorited {
+    color: transparent;
+    text-shadow: 0 0 0 red;
 }

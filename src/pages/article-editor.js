@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {useHistory}  from 'react-router-dom';
+import {useHistory, useParams}  from 'react-router-dom';
 import {useFetch} from '../hooks/use-fetch';
 
-export default function ArticleEditor({onCreated}) {
+export default function ArticleEditor({onCreated, onUpdated}) {
   const [article, setArticle] = useState({
     title: "",
     description: "",
@@ -12,20 +12,25 @@ export default function ArticleEditor({onCreated}) {
   });
 
   let history = useHistory();
+  let {slug} = useParams();
 
+  
+  // Post new article
   const [{isLoading, response, error}, doFetch] = useFetch("articles");
+
+  // Fetch article for edit
+  const [{isLoading:_1, response:articleResponse, error:errorFetchEdit}, doArticleFetch] = useFetch(`articles/${slug}`);
+  
+  // Update article - PUT /api/articles/:slug
+  const [{isLoading:isLoadingPut, response:articleUpdateResponse, error:errorUpdate}, doArticleUpdate] = useFetch(`articles/${slug}`);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // {
-    //   "article": {
-    //     "title": "How to train your dragon",
-    //     "description": "Ever wonder how?",
-    //     "body": "You have to believe",
-    //     "tagList": ["reactjs", "angularjs", "dragons"]
-    //   }
-    // }
+    if (!slug) createArticle();
+    else updateArticle();
+  }
 
+  const createArticle = () => {
     doFetch({
       method: "post",
       body:JSON.stringify({
@@ -39,6 +44,43 @@ export default function ArticleEditor({onCreated}) {
     })
   }
 
+  // api call
+  const updateArticle = () => {
+    doArticleUpdate({
+      method: "put",
+      body:JSON.stringify({
+        article: {
+          title: article.title,
+          body: article.body,
+          description: article.description,
+          tagList: article.tags.split(",")
+        }
+      })
+    })
+  }
+
+  // edit
+  useEffect(() => {
+    if (!slug) return;
+    doArticleFetch();
+  }, [slug])
+
+  // article fetched for edit
+  useEffect(() => {
+    if (!articleResponse?.article) return;
+    setArticle({
+      ...article,
+      title: articleResponse.article.title,
+      description: articleResponse.article.description,
+      body: articleResponse.article.body,
+      tags: articleResponse.article.tag_list.join(",")
+    })
+
+  }, [articleResponse])
+
+
+
+  // new article
   useEffect(() => {
     if (!response) return;
     if (!response.article) return;
@@ -57,6 +99,26 @@ export default function ArticleEditor({onCreated}) {
 
   },[response])
 
+
+   // update article
+   useEffect(() => {
+    if (!articleUpdateResponse) return;
+    if (!articleUpdateResponse.article) return;
+
+    onUpdated(articleUpdateResponse.article);
+    // reset state
+    setArticle({
+      title: "",
+      description: "",
+      body: "",
+      tags: "",
+      tagList: []
+    });
+
+    history.push("/");
+
+  },[articleUpdateResponse])
+
   const handleChange = (e) => {
     e.preventDefault();
     setArticle({
@@ -68,7 +130,7 @@ export default function ArticleEditor({onCreated}) {
   return (
     <div className="card border-0 shadow">
       <div className="card-header">
-        ARTICLE EDITOR
+        ARTICLE EDITOR {slug ? "(edit)" : "new"}
       </div>
       <div className="card-body">
         <form onSubmit={handleSubmit}>

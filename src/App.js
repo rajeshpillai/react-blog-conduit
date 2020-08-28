@@ -2,7 +2,8 @@ import React, {useState, useEffect} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  useParams
 } from 'react-router-dom';
 
 import './App.scss';
@@ -17,17 +18,18 @@ import { CurrentUserProvider } from './providers/current-user-provider';
 
 import ArticleEditor from './pages/article-editor';
 import AuthenticatedRoutes from './components/authenticated-routes';
+import UserLoader from './components/user-loader';
+import TagFeeds from './pages/tag-feeds';
 
 function App() {
   const [articles, setArticles] = useState([]);
   const [deleteArticleSlug, setDeleteArticleSlug] = useState();
 
-  const [{isLoading, response, error}, doFetch] = 
-    useFetch("articles");
+  const [{isLoading, response, error}, doFetch] = useFetch("articles");
 
-    const [{_a , _b, _c}, doFetchDelete] = 
-      useFetch(`articles/${deleteArticleSlug}`);
-  
+  const [{_a , _b, _c}, doFetchDelete] = 
+        useFetch(`articles/${deleteArticleSlug}`);
+
 
   useEffect(() => {
     doFetch({
@@ -62,30 +64,74 @@ function App() {
     ])
   }
 
+  const onArticleUpdated = (article) => {
+     let updated = articles.map(a => {
+       if (a.slug == article.slug) {
+         return article;
+       }
+       return a;
+     })
+
+     setArticles([
+       ...updated
+     ])
+  }
+
+  const onToggleFavs = (slug, status) => {
+    let updated = articles.map(a => {
+      if (a.slug == slug) {
+        a.favorited = status;
+        a.favorites_count = a.favorites_count + (status ? 1 : -1);
+        return a;
+      }
+      return a;
+    })
+
+    setArticles([
+      ...updated
+    ])
+  }
+
   return (
     <CurrentUserProvider>
-      <div className="container">
-        <Router>
-          <NavBar />
-          <Switch>
-            <Route path="/" exact >
-              <GlobalFeed 
-                onArticleDeleted = {onArticleDeleted}
-                data={articles}/>
-            </Route>
-            <Route path="/articles/:slug" 
-              component={Article} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-
-            <AuthenticatedRoutes>
-              <Route path="/article/new" >
-                  <ArticleEditor onCreated={onArticleCreated} />
+      <UserLoader>
+        <div className="container">
+          <Router>
+            <NavBar />
+            <Switch>
+              <Route path="/" exact >
+                <GlobalFeed 
+                  onArticleDeleted = {onArticleDeleted}
+                  onToggleFavs={onToggleFavs}
+                  data={articles}/>
               </Route>
-            </AuthenticatedRoutes>
-          </Switch>
-        </Router>
-      </div>
+              
+              <Route path="/tag/:tag/articles">
+                <TagFeeds
+                    onToggleFavs={onToggleFavs}
+                    onArticleDeleted = {onArticleDeleted}
+                    data={articles} />
+              </Route>
+              
+              <Route path="/article/:slug/edit">
+                  <ArticleEditor onUpdated= {onArticleUpdated} />
+              </Route>
+
+              <Route path="/articles/:slug" 
+                component={Article} />
+              
+              <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
+
+              <AuthenticatedRoutes>
+                <Route path="/article/new" >
+                    <ArticleEditor onCreated={onArticleCreated} />
+                </Route>
+              </AuthenticatedRoutes>
+            </Switch>
+          </Router>
+        </div>
+      </UserLoader>
     </CurrentUserProvider>
   );
 }
