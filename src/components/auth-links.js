@@ -48,7 +48,7 @@ export default function AuthLinks() {
 
         <li className="nav-item">
           <a  onClick={handleSignOut} href="#" className="nav-link">
-            Signout
+            Signout {currentUserState.currentUser.username}
           </a>
         </li>
       </>

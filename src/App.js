@@ -33,7 +33,7 @@ function App() {
     doFetch({
       method: "get"
     })
-  },[])
+  },[deleteArticleSlug])
 
   // The data is actually available now or any errror is there
   useEffect(() => {
