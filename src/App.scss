@@ -53,3 +53,12 @@
     color: transparent;
     text-shadow: 0 0 0 red;
 }
+
+.comments {
+    padding: 10px;
+    .comment {
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+    }
+}

@@ -5,3 +5,4 @@
 - Tag Feed (search)
 - Article Edit
 - Favorite articles
+- Comments
