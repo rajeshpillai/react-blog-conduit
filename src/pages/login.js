@@ -2,7 +2,7 @@ import React, {useState, useEffect,useContext} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import {useFetch} from '../hooks/use-fetch';
 import BackendError from '../components/backend-error-messages';
-import {AUTH_TOKEN_KEY} from '../constants/systems';
+import {SYSTEM} from '../constants/systems';
 import {useLocalStorage} from '../hooks/use-local-storage';
 
 import {CurrentUserContext} from '../context/current-user-context';
@@ -18,7 +18,7 @@ export default function Login() {
     password: "12345678"
   });
 
-  const [token, setToken] = useLocalStorage(AUTH_TOKEN_KEY);
+  const [token, setToken] = useLocalStorage(SYSTEM.AUTH_TOKEN_KEY);
 
   // useFetch
   const [{isLoading, response, error}, doFetch] 
@@ -34,6 +34,8 @@ export default function Login() {
   // When user logins in
   useEffect(() => {
     if (!response) return;
+
+    if (!response.user) return;
     
     // Set the auth token in localStorage
     setToken(response.user.token);

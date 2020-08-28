@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import { API_BASE } from '../constants/systems';
+import { SYSTEM } from '../constants/systems';
 
 // const API = "https://algo-blog-api.herokuapp.com/api";
 // const API = "http://localhost:3001/api";
@@ -20,7 +20,7 @@ export function useFetch(url) {
     if (!isLoading) return;
 
     // Fetch the data
-    fetch(`${API_BASE}/${url}`, {
+    fetch(`${SYSTEM.API_BASE}/${url}`, {
       ...options,
       mode: 'cors',
       headers: {

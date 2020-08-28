@@ -4,6 +4,8 @@ import {
   NavLink
 } from 'react-router-dom';
 
+import AuthLink from './auth-links';
+
 export default function Navbar() {
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
@@ -17,16 +19,7 @@ export default function Navbar() {
               Home
             </NavLink>
           </li>
-          <li className="nav-item">
-            <NavLink to="/login" className="nav-link">
-              Sign in
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/register" className="nav-link">
-              Sign up
-            </NavLink>
-          </li>
+          <AuthLink />
         </ul>
       </div>
     </nav>
