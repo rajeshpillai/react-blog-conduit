@@ -20,9 +20,14 @@ import AuthenticatedRoutes from './components/authenticated-routes';
 
 function App() {
   const [articles, setArticles] = useState([]);
+  const [deleteArticleSlug, setDeleteArticleSlug] = useState();
 
   const [{isLoading, response, error}, doFetch] = 
     useFetch("articles");
+
+    const [{_a , _b, _c}, doFetchDelete] = 
+      useFetch(`articles/${deleteArticleSlug}`);
+  
 
   useEffect(() => {
     doFetch({
@@ -37,6 +42,17 @@ function App() {
     setArticles(response.articles);
   },[response, error])
 
+  // For deleting article
+  useEffect(() => {
+    if (!deleteArticleSlug) return;
+    doFetchDelete({
+      method: "delete"
+    })
+  }, [deleteArticleSlug])
+
+  const onArticleDeleted = (slug) => {
+    setDeleteArticleSlug(slug);
+  }
 
   const onArticleCreated = (article) => {
     // alert(JSON.stringify(article));
@@ -53,7 +69,9 @@ function App() {
           <NavBar />
           <Switch>
             <Route path="/" exact >
-              <GlobalFeed data={articles}/>
+              <GlobalFeed 
+                onArticleDeleted = {onArticleDeleted}
+                data={articles}/>
             </Route>
             <Route path="/articles/:slug" 
               component={Article} />
