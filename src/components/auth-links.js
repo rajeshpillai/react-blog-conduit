@@ -9,6 +9,9 @@ export default function AuthLinks() {
   const [currentUserState,setCurrentUserState] = useContext(CurrentUserContext);
   const [token, setToken] = useLocalStorage(SYSTEM.AUTH_TOKEN_KEY);
 
+  // Logout process
+  // Clear Token
+  // Reset user context
   const handleSignOut = (e) => {
     e.preventDefault();
     setToken("");
@@ -50,7 +53,6 @@ export default function AuthLinks() {
         </li>
       </>
     }
-
     </React.Fragment>
   )
 }

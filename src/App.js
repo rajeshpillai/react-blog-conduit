@@ -15,6 +15,9 @@ import Register from './pages/register';
 import {useFetch} from './hooks/use-fetch';
 import { CurrentUserProvider } from './providers/current-user-provider';
 
+import ArticleEditor from './pages/article-editor';
+import AuthenticatedRoutes from './components/authenticated-routes';
+
 function App() {
   const [articles, setArticles] = useState([]);
 
@@ -49,6 +52,12 @@ function App() {
               component={Article} />
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
+
+            <AuthenticatedRoutes>
+              <Route path="/article/new" >
+                  <ArticleEditor />
+              </Route>
+            </AuthenticatedRoutes>
           </Switch>
         </Router>
       </div>
