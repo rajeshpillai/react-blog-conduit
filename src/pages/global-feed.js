@@ -8,7 +8,13 @@ export default function GlobalFeed({data}) {
           return (
             <article key={item.slug} className="post-item">
               <h4>{item.title}</h4>
-              <div>{item.body}</div>
+              <span className="post-author">
+                - written by {item.author.username}
+              </span>
+              
+              <pre className="post-body">
+                {item.body}
+              </pre>
 
               <footer className="tags">
                 {
