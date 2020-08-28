@@ -1,5 +1,7 @@
 import {useState, useEffect} from 'react';
 import { SYSTEM } from '../constants/systems';
+import {useLocalStorage} from '../hooks/use-local-storage';
+
 
 // const API = "https://algo-blog-api.herokuapp.com/api";
 // const API = "http://localhost:3001/api";
@@ -9,6 +11,8 @@ export function useFetch(url) {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [options, setOptions] = useState({});
+
+  const [token] = useLocalStorage(SYSTEM.AUTH_TOKEN_KEY);
 
   const doFetch = (options = {}) => {
     setOptions(options);
@@ -26,6 +30,7 @@ export function useFetch(url) {
       headers: {
         "Content-type": "application/json; charset=UTf-8",
         "Access-Control-Allow-Origin":"*",
+        "Authorization": token ? `Token ${token}` : ''
       }
     }).then(res => {
       console.log(res);

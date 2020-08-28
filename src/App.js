@@ -38,6 +38,13 @@ function App() {
   },[response, error])
 
 
+  const onArticleCreated = (article) => {
+    // alert(JSON.stringify(article));
+    setArticles([
+      article,
+      ...articles
+    ])
+  }
 
   return (
     <CurrentUserProvider>
@@ -55,7 +62,7 @@ function App() {
 
             <AuthenticatedRoutes>
               <Route path="/article/new" >
-                  <ArticleEditor />
+                  <ArticleEditor onCreated={onArticleCreated} />
               </Route>
             </AuthenticatedRoutes>
           </Switch>
