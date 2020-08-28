@@ -6,7 +6,7 @@ export default function GlobalFeed({data}) {
       {
         data.map(item => {
           return (
-            <article className="post-item">
+            <article key={data.slug} className="post-item">
               <h4>{item.title}</h4>
               <div>{item.body}</div>
             </article>

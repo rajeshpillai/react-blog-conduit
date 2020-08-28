@@ -17,7 +17,8 @@ import {useFetch} from './hooks/use-fetch';
 function App() {
   const [articles, setArticles] = useState([]);
 
-  const [{isLoading, response, error}, doFetch] = useFetch("articles");
+  const [{isLoading, response, error}, doFetch] = 
+    useFetch("articles");
 
   useEffect(() => {
     doFetch({

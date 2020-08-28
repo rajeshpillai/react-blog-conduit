@@ -1,19 +1,21 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {useFetch} from '../hooks/use-fetch';
 import BackendError from '../components/backend-error-messages';
+import {AUTH_TOKEN_KEY} from '../constants/systems';
+import {useLocalStorage} from '../hooks/use-local-storage';
 
 export default function Login() {
   const [user, setUser] = useState({
-    email: "",
-    password: ""
+    email: "test@test.com",  // only for temp demo purpose
+    password: "12345678"
   });
+
+  const [token, setToken] = useLocalStorage(AUTH_TOKEN_KEY);
 
   // useFetch
   const [{isLoading, response, error}, doFetch] 
     = useFetch("users/login");
-
-  console.log("login: ",isLoading, response, error);
 
   const handleChange = (e) => {
     setUser({
@@ -21,6 +23,11 @@ export default function Login() {
       [e.target.name] : e.target.value
     })
   }
+
+  useEffect(() => {
+    if (!response) return;
+    setToken(response.user.token);
+  },[response])
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,23 +42,6 @@ export default function Login() {
         }
       })
     });
-
-    // fetch(`${API}/users/login`, {
-    //   method: 'post',
-    //   body: JSON.stringify({
-    //     user: {
-    //       email: user.email,
-    //       password: user.password
-    //     }
-    //   }),
-    //   headers: {
-    //     "Content-type": "application/json; charset=UTF-8"
-    //   }
-    // })
-    // .then(res => res.json())
-    // .then(json => {
-    //   console.log(json);
-    // })
   }
 
   return (
