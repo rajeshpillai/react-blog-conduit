@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useHistory, useParams}  from 'react-router-dom';
 import {useFetch} from '../hooks/use-fetch';
+import InputTag from '../components/inputtag';
 
 export default function ArticleEditor({onCreated, onUpdated}) {
   const [article, setArticle] = useState({
@@ -12,6 +13,8 @@ export default function ArticleEditor({onCreated, onUpdated}) {
   });
 
   let history = useHistory();
+  
+  // for editing
   let {slug} = useParams();
 
   
@@ -19,10 +22,12 @@ export default function ArticleEditor({onCreated, onUpdated}) {
   const [{isLoading, response, error}, doFetch] = useFetch("articles");
 
   // Fetch article for edit
-  const [{isLoading:_1, response:articleResponse, error:errorFetchEdit}, doArticleFetch] = useFetch(`articles/${slug}`);
+  const [{isLoading:_1, response:articleResponse, error:errorFetchEdit}, doArticleFetch] 
+    = useFetch(`articles/${slug}`);
   
   // Update article - PUT /api/articles/:slug
-  const [{isLoading:isLoadingPut, response:articleUpdateResponse, error:errorUpdate}, doArticleUpdate] = useFetch(`articles/${slug}`);
+  const [{isLoading:isLoadingPut, response:articleUpdateResponse, error:errorUpdate}, doArticleUpdate] 
+    = useFetch(`articles/${slug}`);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -127,10 +132,34 @@ export default function ArticleEditor({onCreated, onUpdated}) {
     })
   }
 
+  const onAddTag = (tag) => {
+    if (!tag) return;
+    setArticle({
+      ...article,
+      tags: article.tags + "," + tag
+    })
+  }
+
+  const onDeleteTag = (tag) => {
+    // tags are string
+    let remainingTags = article.tags;
+    remainingTags = article.tags.split(",").filter(t => {
+      return t != tag;
+    });
+
+    remainingTags = remainingTags.join(",");
+    //alert(remainingTags);
+    setArticle({
+      ...article,
+      tags: remainingTags
+    })
+ }
+ 
+
   return (
-    <div className="card border-0 shadow">
+    <div className="card border-0 shadow animate__animated  animate__rotateIn">
       <div className="card-header">
-        ARTICLE EDITOR {slug ? "(edit)" : "new"}
+        ARTICLE EDITOR {slug ? "(edit)" : "(new)"}
       </div>
       <div className="card-body">
         <form onSubmit={handleSubmit}>
@@ -142,6 +171,23 @@ export default function ArticleEditor({onCreated, onUpdated}) {
               onChange= {handleChange}
               className="form-input-control"/>
           </div>
+
+          <div className="form-group">
+            <input type="text" 
+              placeholder="enter tags (comma separated)"
+              name="tags"
+              value={article.tags}
+              onChange= {handleChange}
+              className="form-input-control"/>
+          </div>
+
+          <InputTag  
+             onAddTag={onAddTag}
+             onDeleteTag = {onDeleteTag}
+             defaultTags = {article.tags}
+             placeholder = "enter tags separated by comma"
+          />
+
           <div className="form-group">
             <input type="text" 
               placeholder="enter article description"
@@ -167,14 +213,8 @@ export default function ArticleEditor({onCreated, onUpdated}) {
               }
               />
           </div>
-          <div className="form-group">
-            <input type="text" 
-              placeholder="enter tags (comma separated)"
-              name="tags"
-              value={article.tags}
-              onChange= {handleChange}
-              className="form-input-control"/>
-          </div>
+         
+
           <button className="btn btn-primary">
             SUBMIT
           </button>

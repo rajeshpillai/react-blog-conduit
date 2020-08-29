@@ -27,8 +27,9 @@ function App() {
 
   const [{isLoading, response, error}, doFetch] = useFetch("articles");
 
-  const [{_a , _b, _c}, doFetchDelete] = 
-        useFetch(`articles/${deleteArticleSlug}`);
+  const [{isLoading:isLoadingDelete,
+          response:deleteRespons, 
+          error:deleteError}, doFetchDelete] = useFetch(`articles/${deleteArticleSlug}`);
 
 
   useEffect(() => {
@@ -113,10 +114,7 @@ function App() {
                     data={articles} />
               </Route>
               
-              <Route path="/article/:slug/edit">
-                  <ArticleEditor onUpdated= {onArticleUpdated} />
-              </Route>
-
+              
               <Route path="/articles/:slug" 
                 component={Article} />
               
@@ -127,6 +125,9 @@ function App() {
                 <Route path="/article/new" >
                     <ArticleEditor onCreated={onArticleCreated} />
                 </Route>
+                <Route path="/article/:slug/edit">
+                  <ArticleEditor onUpdated= {onArticleUpdated} />
+               </Route>
               </AuthenticatedRoutes>
             </Switch>
           </Router>
