@@ -28,7 +28,7 @@ function App() {
   const [{isLoading, response, error}, doFetch] = useFetch("articles");
 
   const [{isLoading:isLoadingDelete,
-          response:deleteRespons, 
+          response:deleteResponse, 
           error:deleteError}, doFetchDelete] = useFetch(`articles/${deleteArticleSlug}`);
 
 
@@ -36,7 +36,7 @@ function App() {
     doFetch({
       method: "get"
     })
-  },[deleteArticleSlug])
+  },[deleteArticleSlug, deleteResponse])
 
   // The data is actually available now or any errror is there
   useEffect(() => {
